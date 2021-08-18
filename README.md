@@ -43,10 +43,26 @@ source as a starting point for complex real-time event processing covering descr
 diagnostic, predictive and prescriptive analytics.
 
 <p align="center">
-  <img src="https://github.com/predictiveworks/works-stream/blob/main/images/works-stream-2021-08-18.png" width="600" alt="Works Stream">
+  <img src="https://github.com/predictiveworks/works-stream/blob/main/images/works-stream-2021-08-18-1.png" width="600" alt="Works Stream">
 </p>
 
-
-
 ### Threat Intelligence
-TBD
+
+OpenCTI is a unified open source platform for all levels of Cyber Threat Intelligence. A major goal
+is to build and provide a powerful knowledge base for cyber threat intelligence and cyber operations.
+
+OpenCTI ships with a variety of connectors to widely known threat intelligence data sources like
+AlienVault, CrowdStrike, FireEye and MISP, MITRE ATT&CK and more.
+
+**PredictiveWorks** ships with OpenCTI Beat, as standalone Akka based Http(s) service to consume
+the OpenCTI events stream (SSE), applies moderate event transformations and republishes the threat
+feed as Server Sent Events.
+
+This approach enables **Works Stream** to consume both, events from IoT devices and threat intelligence.
+
+Then OpenCTI threat events can be consumed with a Google **CDAP** streaming source and revealed to 
+complex event analytics.
+
+<p align="center">
+  <img src="https://github.com/predictiveworks/works-stream/blob/main/images/works-stream-2021-08-18-2.png" width="600" alt="Works Stream">
+</p>
