@@ -42,5 +42,11 @@ events as an Apache Spark event stream.
 source as a starting point for complex real-time event processing covering descriptive,
 diagnostic, predictive and prescriptive analytics.
 
+<p align="center">
+  <img src="https://github.com/predictiveworks/works-stream/blob/main/images/works-stream-2021-08-18.png" width="600" alt="Works Stream">
+</p>
+
+
+
 ### Threat Intelligence
 TBD
