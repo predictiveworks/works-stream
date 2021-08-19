@@ -30,6 +30,21 @@ diagnostic, predictive and prescriptive analytics.
 
 ## MQTT
 
+**Works Stream** supports access to the Internet of Things leveraging semantic layers like Eclipse Ditto
+and FIWARE (see below) that provide a common data model and format to abstract from the protocol layer.
+
+**Works Stream**, however, is not restricted to semantic IoT layer and also supports handpicked IoT protocols.
+The most important one is MQTT (version 3.1, 3.1.1 and 5).
+
+<p align="center">
+  <img src="https://github.com/predictiveworks/works-stream/blob/main/images/works-stream-2021-08-18-4.png" width="600" alt="Works Stream">
+</p>
+
+### Eclipse Paho
+
+Eclipse Paho ships with an approved client for MQTT 3.1 and MQTT 3.1.1, and **Works Stream** can be used to
+publish events from respective MQTT brokers as an Apache Spark event stream.
+
 ### HiveMQ
 
 HiveMQ is an MQTT broker, and a client based messaging platform designed for the fast, 
