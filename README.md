@@ -14,10 +14,30 @@ need to know how or where exactly the physical Things are connected.
 
 With Ditto a thing can just be used as any other web service via its digital twin.
 
-TBC
+Eclipse Ditto adds a semantic layer to the MQTT 3.1.1 and MQTT 5 and ease the analysis of MQTT based
+device reading.
+
+**Works Stream** is a library to connect to an Eclipse Ditto service and register for both, *twin events* 
+and *live messages*. Events and messages are published as an Apache Spark event stream.
+
+**PredictiveWorks.** uses *Work Stream* to consume twin events and live messages  with a Google **CDAP** 
+streaming source as a starting point for complex real-time event processing covering descriptive,
+diagnostic, predictive and prescriptive analytics.
+
+<p align="center">
+  <img src="https://github.com/predictiveworks/works-stream/blob/main/images/works-stream-2021-08-18-3.png" width="600" alt="Works Stream">
+</p>
 
 ## MQTT
-TBD
+
+### HiveMQ
+
+HiveMQ is an MQTT broker, and a client based messaging platform designed for the fast, 
+efficient and reliable movement of data to and from connected IoT devices. It uses the 
+MQTT protocol for instant, bi-directional push of data between devices and the enterprise
+system.
+
+HiveMQ supports the MQTT 3.1, MQTT 3.1.1 and MQTT 5 specification.
 
 ## Server Sent Events (SSE)
 
