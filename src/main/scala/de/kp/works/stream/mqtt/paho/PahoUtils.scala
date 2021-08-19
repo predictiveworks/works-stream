@@ -18,6 +18,7 @@ package de.kp.works.stream.mqtt.paho
  *
  */
 
+import de.kp.works.stream.mqtt.MqttEvent
 import de.kp.works.stream.ssl._
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext

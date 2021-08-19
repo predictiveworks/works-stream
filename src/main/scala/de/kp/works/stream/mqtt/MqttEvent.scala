@@ -1,4 +1,5 @@
-package de.kp.works.stream.mqtt.paho
+package de.kp.works.stream.mqtt
+
 /*
  * Copyright (c) 2020 Dr. Krusche & Partner PartG. All rights reserved.
  *

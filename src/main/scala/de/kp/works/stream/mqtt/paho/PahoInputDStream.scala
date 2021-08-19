@@ -18,6 +18,7 @@ package de.kp.works.stream.mqtt.paho
  * 
  */
 
+import de.kp.works.stream.mqtt.MqttEvent
 import de.kp.works.stream.ssl._
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext
@@ -206,7 +207,7 @@ class MqttReceiver(
           val retained = message.isRetained
           
           /* Serialize plain byte message */
-  			    val json = new String(payload, UTF8);
+  			    val json = new String(payload, UTF8)
   
   			    /* Extract metadata from topic and
   			     * serialized payload

@@ -57,6 +57,14 @@
             <version>${paho.version}</version>
         </dependency>
 
+        <!-- HIVEMQ
+        -->
+        <dependency>
+            <groupId>com.hivemq</groupId>
+            <artifactId>hivemq-mqtt-client</artifactId>
+            <version>${hivemq.version}</version>
+        </dependency>
+
         <!-- JSON
         -->
         <dependency>

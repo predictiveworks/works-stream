@@ -23,6 +23,7 @@ import java.security.cert.X509Certificate
 
 import javax.net.ssl._
 import org.bouncycastle.jce.provider.BouncyCastleProvider
+import scala.collection.JavaConversions._
 
 object SslOptions {
 
@@ -202,7 +203,7 @@ class SslOptions(
   
   val cipherSuites: Option[Array[String]] = None) {
 
-  def getCipherSuites: List[String] = {
+  def getCipherSuites: java.util.List[String] = {
 
     if (cipherSuites.isDefined)
       cipherSuites.get.toList
