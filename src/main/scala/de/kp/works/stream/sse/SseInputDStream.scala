@@ -35,7 +35,7 @@ class SseInputDStream(
     storageLevel: StorageLevel,
     serverUrl: String,
     authToken: Option[String] = None,
-    sslOptions: Option[SSLOptions] = None) extends ReceiverInputDStream[SseEvent](_ssc) {
+    sslOptions: Option[SslOptions] = None) extends ReceiverInputDStream[SseEvent](_ssc) {
 
   override def name: String = s"Server Sent Events (SSE) stream [$id]"
   
@@ -53,7 +53,7 @@ class SseReceiver(
     storageLevel: StorageLevel,
     serverUrl: String,
     authToken: Option[String],
-    sslOptions: Option[SSLOptions] = None) extends Receiver[SseEvent](storageLevel) {
+    sslOptions: Option[SslOptions] = None) extends Receiver[SseEvent](storageLevel) {
   
   def onStop() {
   }

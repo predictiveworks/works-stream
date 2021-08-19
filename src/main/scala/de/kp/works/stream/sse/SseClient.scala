@@ -26,7 +26,7 @@ import javax.net.ssl.SSLContext
 class SseClient(
    serverUrl: String,
    authToken: Option[String],
-   sslOptions: Option[SSLOptions] = None) {
+   sslOptions: Option[SslOptions] = None) {
   /**
    * This is an internal helper method to create an OkHttpClient
    * that trusts all certificates

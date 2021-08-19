@@ -24,7 +24,152 @@ import java.security.cert.X509Certificate
 import javax.net.ssl._
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 
-class SSLOptions(
+object SslOptions {
+
+  object Builder {
+
+    /***** KEY & TRUST STORES *****/
+
+    def buildStoreOptions(
+      keystoreFile: String,
+      keystoreType: String,
+      keystorePassword: String,
+      keystoreAlgorithm: String):SslOptions = {
+
+      new SslOptions(
+        keystoreFile = Option(keystoreFile),
+        keystoreType = Option(keystoreType),
+        keystorePassword = Option(keystorePassword),
+        keystoreAlgorithm = Option(keystoreAlgorithm))
+    }
+
+    def buildStoreOptions(
+      keystoreFile: String,
+      keystoreType: String,
+      keystorePassword: String,
+      keystoreAlgorithm: String,
+      cipherSuites: List[String]):SslOptions = {
+
+      new SslOptions(
+        keystoreFile = Option(keystoreFile),
+        keystoreType = Option(keystoreType),
+        keystorePassword = Option(keystorePassword),
+        keystoreAlgorithm = Option(keystoreAlgorithm),
+        cipherSuites = Option(cipherSuites.toArray))
+    }
+
+    def buildStoreOptions(
+      keystoreFile: String,
+      keystoreType: String,
+      keystorePassword: String,
+      keystoreAlgorithm: String,
+      truststoreFile: String,
+      truststoreType: String,
+      truststorePassword: String,
+      truststoreAlgorithm: String):SslOptions = {
+
+      new SslOptions(
+        keystoreFile = Option(keystoreFile),
+        keystoreType = Option(keystoreType),
+        keystorePassword = Option(keystorePassword),
+        keystoreAlgorithm = Option(keystoreAlgorithm),
+        truststoreFile = Option(truststoreFile),
+        truststoreType = Option(truststoreType),
+        truststorePassword = Option(truststorePassword),
+        truststoreAlgorithm = Option(truststoreAlgorithm))
+    }
+
+    def buildStoreOptions(
+      keystoreFile: String,
+      keystoreType: String,
+      keystorePassword: String,
+      keystoreAlgorithm: String,
+      truststoreFile: String,
+      truststoreType: String,
+      truststorePassword: String,
+      truststoreAlgorithm: String,
+      cipherSuites: List[String]):SslOptions = {
+
+      new SslOptions(
+        keystoreFile = Option(keystoreFile),
+        keystoreType = Option(keystoreType),
+        keystorePassword = Option(keystorePassword),
+        keystoreAlgorithm = Option(keystoreAlgorithm),
+        truststoreFile = Option(truststoreFile),
+        truststoreType = Option(truststoreType),
+        truststorePassword = Option(truststorePassword),
+        truststoreAlgorithm = Option(truststoreAlgorithm),
+        cipherSuites = Option(cipherSuites.toArray))
+    }
+
+    /***** CERTIFICATES *****/
+
+    def buildCertOptions(
+      caCert: X509Certificate,
+      cert: X509Certificate,
+      privateKey: PrivateKey,
+      privateKeyPass: String):SslOptions = {
+
+      new SslOptions(
+        caCert = Option(caCert),
+        cert = Option(cert),
+        privateKey = Option(privateKey),
+        privateKeyPass = Option(privateKeyPass))
+
+    }
+
+    def buildCertOptions(
+      caCert: X509Certificate,
+      cert: X509Certificate,
+      privateKey: PrivateKey,
+      privateKeyPass: String,
+      cipherSuites: List[String]):SslOptions = {
+
+      new SslOptions(
+        caCert = Option(caCert),
+        cert = Option(cert),
+        privateKey = Option(privateKey),
+        privateKeyPass = Option(privateKeyPass),
+        cipherSuites = Option(cipherSuites.toArray))
+
+    }
+
+    /***** CERTIFICATE FILES *****/
+
+    def buildCertFileOptions(
+      caCertFile: String,
+      certFile: String,
+      privateKeyFile: String,
+      privateKeyFilePass: String):SslOptions = {
+
+      new SslOptions(
+        caCertFile = Option(caCertFile),
+        certFile = Option(certFile),
+        privateKeyFile = Option(privateKeyFile),
+        privateKeyFilePass = Option(privateKeyFilePass))
+
+    }
+
+    def buildCertFileOptions(
+      caCertFile: String,
+      certFile: String,
+      privateKeyFile: String,
+      privateKeyFilePass: String,
+      cipherSuites: List[String]):SslOptions = {
+
+      new SslOptions(
+        caCertFile = Option(caCertFile),
+        certFile = Option(certFile),
+        privateKeyFile = Option(privateKeyFile),
+        privateKeyFilePass = Option(privateKeyFilePass),
+        cipherSuites = Option(cipherSuites.toArray))
+
+    }
+
+  }
+}
+
+class SslOptions(
 
   val tlsVersion: String = "TLS",  
     

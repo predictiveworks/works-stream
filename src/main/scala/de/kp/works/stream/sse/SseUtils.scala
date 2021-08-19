@@ -76,7 +76,7 @@ object SseUtils {
     storageLevel: StorageLevel,
     serverUrl: String,
     authToken: String,
-    sslOptions: SSLOptions): JavaReceiverInputDStream[SseEvent] = {
+    sslOptions: SslOptions): JavaReceiverInputDStream[SseEvent] = {
 
     implicitly[ClassTag[AnyRef]].asInstanceOf[ClassTag[String]]
     createStream(jssc.ssc, storageLevel, serverUrl, Option(authToken), Option(sslOptions))
@@ -97,7 +97,7 @@ object SseUtils {
     storageLevel: StorageLevel = StorageLevel.MEMORY_AND_DISK_SER_2,
     serverUrl: String,
     authToken: Option[String],
-    sslOptions: Option[SSLOptions]): ReceiverInputDStream[SseEvent] = {
+    sslOptions: Option[SslOptions]): ReceiverInputDStream[SseEvent] = {
     new SseInputDStream(ssc, storageLevel, serverUrl, authToken, sslOptions)
   }
 
