@@ -1,6 +1,6 @@
-package de.kp.works.stream.ssl;
+package de.kp.works.stream.ssl
 /*
- * Copyright (c) 2020 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2020 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -13,21 +13,22 @@ package de.kp.works.stream.ssl;
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * @author Stefan Krusche, Dr. Krusche & Partner PartG
- * 
+ *
  */
 
-import java.security.cert.X509Certificate;
-import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate
+import javax.net.ssl.X509TrustManager
 
-public class AllTrustManager implements X509TrustManager {
+class AllTrustManager extends X509TrustManager {
 
-	public X509Certificate[] getAcceptedIssuers() {
-		return new java.security.cert.X509Certificate[]{};
-	}
+  override def getAcceptedIssuers = Array.empty[X509Certificate]
 
-	public void checkClientTrusted(X509Certificate[] chain, String authType) {}
+  override def checkClientTrusted(chain: Array[X509Certificate], authType: String): Unit = {
+  }
 
-	public void checkServerTrusted(X509Certificate[] chain, String authType) {}
+  override def checkServerTrusted(chain: Array[X509Certificate], authType: String): Unit = {
+  }
+
 }

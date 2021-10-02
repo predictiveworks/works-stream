@@ -81,8 +81,8 @@
             <version>${okhttp.version}</version>
         </dependency>
 
-        <!-- SPARK STREAMING -->
-
+        <!-- SPARK STREAMING
+        -->
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-streaming_2.11</artifactId>

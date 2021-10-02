@@ -463,7 +463,7 @@ class HiveMQReceiver(
        */
       val version = mqttVersion.getOrElse(3)
       if (version == 3)
-          listenToMqtt3
+          listenToMqtt3()
           
       else
           listenToMqtt5()
