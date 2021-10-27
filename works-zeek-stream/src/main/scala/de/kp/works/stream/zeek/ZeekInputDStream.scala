@@ -49,8 +49,7 @@ class ZeekReceiver(
   }
 
   def onStart() {
-    client = ZeekClient.build(properties)
-    client.setReceiver(this)
+    client = ZeekClient.build(properties, store)
   }
 
 }

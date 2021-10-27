@@ -22,25 +22,28 @@ import java.util.Properties
 
 object ZeekClient {
 
-  def build(properties:Properties): ZeekClient =
-    new ZeekClient(properties)
+  def build(properties:Properties, store:String => Unit): ZeekClient =
+    new ZeekClient(properties, store)
 
 }
 
-class ZeekClient(properties:Properties) {
+class ZeekClient(properties:Properties, store:String => Unit) {
 
-  private var receiver:ZeekReceiver = _
-  private val zeekOptions = new ZeekOptions(properties)
+  private var listener:ZeekListener = _
+  private val options = new ZeekOptions(properties)
 
   def disconnect():Unit = {
-
+    if (listener != null) listener.stop()
   }
 
   def connect():Unit = {
 
+    val numThreads = options.getNumThreads
+    val monitor = new ZeekMonitor(options, new ZeekHandler(options, store))
+
+    listener = new ZeekListener(monitor, numThreads)
+    listener.start()
+
   }
 
-  def setReceiver(receiver:ZeekReceiver):Unit = {
-    this.receiver = receiver
-  }
 }

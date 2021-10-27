@@ -1,4 +1,5 @@
-package de.kp.works.stream.fleet
+package de.kp.works.stream.zeek
+
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -20,7 +21,7 @@ package de.kp.works.stream.fleet
 
 import java.util.concurrent.{ExecutorService, Executors}
 
-class FleetListener(monitor:FleetMonitor, numThreads:Int = 1) {
+class ZeekListener(monitor:ZeekMonitor, numThreads:Int = 1) {
 
   private var executorService:ExecutorService = _
 
@@ -31,7 +32,7 @@ class FleetListener(monitor:FleetMonitor, numThreads:Int = 1) {
       override def run(): Unit = {
 
         val now = new java.util.Date().toString
-        println(s"[FleetListener] $now - Listener worker started.")
+        println(s"[ZeekListener] $now - Listener worker started.")
 
         monitor.start()
 

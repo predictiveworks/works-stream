@@ -1,4 +1,4 @@
-package de.kp.works.stream.fleet
+package de.kp.works.stream.zeek
 
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
@@ -30,9 +30,9 @@ import scala.collection.mutable
 import scala.concurrent.ExecutionContextExecutor
 import scala.concurrent.duration.{DurationInt, FiniteDuration}
 
-class FleetMonitor(options:FleetOptions, handler: FleetHandler) {
+class ZeekMonitor(options:ZeekOptions, handler:ZeekHandler) {
 
-  import FleetActor._
+  import ZeekActor._
   /**
    * Akka 2.6 provides a default materializer out of the box, i.e., for Scala
    * an implicit materializer is provided if there is an implicit ActorSystem
@@ -150,8 +150,8 @@ class FleetMonitor(options:FleetOptions, handler: FleetHandler) {
    * A helper method to build a file listener actor
    */
   protected def buildFileActor(path:Path):ActorRef = {
-    val actorName = "Fleet-Actor-" + java.util.UUID.randomUUID.toString
-    system.actorOf(Props(new FleetActor(options, path, handler)), actorName)
+    val actorName = "Zeek-Actor-" + java.util.UUID.randomUUID.toString
+    system.actorOf(Props(new ZeekActor(options, path, handler)), actorName)
   }
 
 }
