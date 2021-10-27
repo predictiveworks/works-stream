@@ -1,4 +1,4 @@
-package de.kp.works.stream.ditto
+package de.kp.works.stream.opencti
 /*
  * Copyright (c) 2019 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -24,31 +24,31 @@ import org.apache.spark.streaming.receiver.Receiver
 
 import java.util.Properties
 
-class DittoInputDStream(
-    ssc_ : StreamingContext,
-    properties: Properties,
-    storageLevel: StorageLevel) extends ReceiverInputDStream[String](ssc_) {
-  
-  override def name: String = s"Web socket stream [$id]"
-  
-  def getReceiver(): Receiver[String] = {
-    new DittoReceiver(properties, storageLevel)
-  }
+class CTIInputDStream(
+  ssc_ : StreamingContext,
+  properties: Properties,
+  storageLevel: StorageLevel) extends ReceiverInputDStream[String](ssc_) {
+
+  override def name: String = s"OpenCTI event stream [$id]"
+
+    def getReceiver(): Receiver[String] = {
+      new CTIReceiver(properties, storageLevel)
+    }
 
 }
 
-class DittoReceiver(
-    properties: Properties,
-    storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
+class CTIReceiver(
+  properties: Properties,
+  storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
 
-  private var client:DittoClient = _
-  
+  private var client:CTIClient = _
+
   def onStop() {
     if (client != null) client.disconnect()
   }
 
   def onStart() {
-    client = DittoClient.build(properties)
+    client = CTIClient.build(properties)
     client.setReceiver(this)
   }
 

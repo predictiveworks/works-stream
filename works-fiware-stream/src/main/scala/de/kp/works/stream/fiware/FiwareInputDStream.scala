@@ -1,4 +1,5 @@
-package de.kp.works.stream.ditto
+package de.kp.works.stream.fiware
+
 /*
  * Copyright (c) 2019 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -24,31 +25,31 @@ import org.apache.spark.streaming.receiver.Receiver
 
 import java.util.Properties
 
-class DittoInputDStream(
-    ssc_ : StreamingContext,
-    properties: Properties,
-    storageLevel: StorageLevel) extends ReceiverInputDStream[String](ssc_) {
+class FiwareInputDStream(
+  ssc_ : StreamingContext,
+  properties: Properties,
+  storageLevel: StorageLevel) extends ReceiverInputDStream[String](ssc_) {
   
-  override def name: String = s"Web socket stream [$id]"
+  override def name: String = s"FIWARE notification stream [$id]"
   
   def getReceiver(): Receiver[String] = {
-    new DittoReceiver(properties, storageLevel)
+    new FiwareReceiver(properties, storageLevel)
   }
 
 }
 
-class DittoReceiver(
+class FiwareReceiver(
     properties: Properties,
     storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
 
-  private var client:DittoClient = _
-  
+  private var client:FiwareClient = _
+
   def onStop() {
     if (client != null) client.disconnect()
   }
 
   def onStart() {
-    client = DittoClient.build(properties)
+    client = FiwareClient.build(properties)
     client.setReceiver(this)
   }
 

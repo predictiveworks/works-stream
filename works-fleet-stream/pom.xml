@@ -2,65 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>works-stream</artifactId>
+        <groupId>de.kp.works</groupId>
+        <version>0.4.0</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.kp.works</groupId>
-    <artifactId>works-stream</artifactId>
-    <packaging>pom</packaging>
-    <version>0.4.0</version>
-    <modules>
-        <module>works-ditto-stream</module>
-        <module>works-ssl-stream</module>
-        <module>works-mqtt-stream</module>
-        <module>works-sse-stream</module>
-        <module>works-fiware-stream</module>
-        <module>works-fleet-stream</module>
-        <module>works-opencti-stream</module>
-        <module>works-zeek-stream</module>
-    </modules>
-
-    <name>Works Stream</name>
-    <description>
-        Works Stream is the streaming module for PredictiveWorks. It is made to support
-        streaming source that are not covered by Apache Spark Streaming.
-    </description>
+    <artifactId>works-fleet-stream</artifactId>
 
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-
-        <gson.version>2.8.6</gson.version>
-
-        <scala.version>2.11.11</scala.version>
-        <scala.binary.version>2.11</scala.binary.version>
-
-        <!--
-        Leveraging this project in a Google CDAP environment
-        requires this version of Apache Spark
-        -->
-        <spark.version>2.1.3</spark.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
     </properties>
-
-    <dependencies>
-
-        <!-- JSON
-        -->
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-
-        <!-- SPARK STREAMING
-        -->
-        <dependency>
-            <groupId>org.apache.spark</groupId>
-            <artifactId>spark-streaming_${scala.binary.version}</artifactId>
-            <version>${spark.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-    </dependencies>
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
@@ -118,7 +72,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>scala-compile-first</id>
+                        <id>scala-compile</id>
                         <phase>process-resources</phase>
                         <goals>
                             <goal>add-source</goal>
