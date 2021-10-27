@@ -1,7 +1,6 @@
 package de.kp.works.stream.fleet
-
 /*
- * Copyright (c) 2019 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -19,29 +18,10 @@ package de.kp.works.stream.fleet
  *
  */
 
-import java.util.Properties
-import scala.collection.JavaConverters._
+import com.google.gson.JsonElement
 
-class FleetOptions(properties:Properties) {
+class FleetHandler(options:FleetOptions, store:String => Unit) {
 
-  val settings:Map[String,String] = properties.asScala.toMap
-
-  def getLogFolder:String = ???
-
-  def getLogPostfix:String = ???
-
-  def getMaxBufferSize:Int = ???
-
-  def getMaxLineSize:Int = ???
-
-  def getNumThreads:Int = ???
-  /*
-   * The polling interval in seconds
-   */
-  def getPollingInterval:Int = ???
-  /*
-   * The Akka system name for the file monitor
-   */
-  def getSystemName:String = ???
+  def sendFileEvent(fileName:String, fileElement:JsonElement):Unit = ???
 
 }

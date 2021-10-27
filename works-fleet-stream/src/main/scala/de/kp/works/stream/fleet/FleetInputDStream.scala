@@ -49,8 +49,7 @@ class FleetReceiver(
   }
 
   def onStart() {
-    client = FleetClient.build(properties)
-    client.setReceiver(this)
+    client = FleetClient.build(properties, store)
   }
 
 }

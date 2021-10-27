@@ -22,25 +22,28 @@ import java.util.Properties
 
 object FleetClient {
 
-  def build(properties:Properties): FleetClient =
-    new FleetClient(properties)
+  def build(properties:Properties, store:String => Unit): FleetClient =
+    new FleetClient(properties, store)
 
 }
 
-class FleetClient(properties:Properties) {
+class FleetClient(properties:Properties, store:String => Unit) {
 
-  private var receiver:FleetReceiver = _
-  private val fleetOptions = new FleetOptions(properties)
+  private var listener:FleetListener = _
+  private val options = new FleetOptions(properties)
 
   def disconnect():Unit = {
-
+    if (listener != null) listener.stop()
   }
 
   def connect():Unit = {
 
+    val numThreads = options.getNumThreads
+    val monitor = new FleetMonitor(options, new FleetHandler(options, store))
+
+    listener = new FleetListener(monitor, numThreads)
+    listener.start()
+
   }
 
-  def setReceiver(receiver:FleetReceiver):Unit = {
-    this.receiver = receiver
-  }
 }

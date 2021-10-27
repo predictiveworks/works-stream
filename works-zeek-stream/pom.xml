@@ -14,7 +14,28 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <encoding>UTF-8</encoding>
+
+        <alpakka.version>2.0.2</alpakka.version>
+
     </properties>
+
+    <dependencies>
+
+        <!-- ALPAKKA FILESYSTEM
+
+        The version 2.0.2 was selected as it is compliant
+        with other Akka-based libraries of this project.
+        -->
+        <dependency>
+            <groupId>com.lightbend.akka</groupId>
+            <artifactId>akka-stream-alpakka-file_${scala.binary.version}</artifactId>
+            <version>${alpakka.version}</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>

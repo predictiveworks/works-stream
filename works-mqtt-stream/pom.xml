@@ -16,6 +16,7 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <encoding>UTF-8</encoding>
 
         <hivemq.version>1.2.0</hivemq.version>
         <paho.version>1.2.2</paho.version>
