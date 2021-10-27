@@ -14,7 +14,32 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <encoding>UTF-8</encoding>
+
+        <akka.http.version>10.1.14</akka.http.version>
+        <akka.stream.version>2.5.31</akka.stream.version>
+
     </properties>
+
+    <dependencies>
+
+        <!-- AKKA
+        -->
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-http_${scala.binary.version}</artifactId>
+            <version>${akka.http.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.typesafe.akka</groupId>
+            <artifactId>akka-stream_${scala.binary.version}</artifactId>
+            <version>${akka.stream.version}</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
@@ -61,7 +86,7 @@
                 <artifactId>scala-maven-plugin</artifactId>
                 <version>4.4.0</version>
                 <configuration>
-                    <scalaVersion>2.11.11</scalaVersion>
+                    <scalaVersion>2.11.12</scalaVersion>
                     <args>
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>

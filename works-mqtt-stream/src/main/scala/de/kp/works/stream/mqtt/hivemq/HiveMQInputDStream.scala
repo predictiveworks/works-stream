@@ -18,10 +18,12 @@ package de.kp.works.stream.mqtt.hivemq
  * 
  */
 
+import com.hivemq.client.internal.mqtt.{MqttClientSslConfigImplBuilder, MqttRxClientBuilder}
+import com.hivemq.client.internal.mqtt.message.auth.MqttSimpleAuthBuilder
+import com.hivemq.client.internal.mqtt.message.auth.mqtt3.Mqtt3SimpleAuthViewBuilder
+import com.hivemq.client.internal.mqtt.mqtt3.Mqtt3RxClientViewBuilder
 import com.hivemq.client.mqtt._
 import com.hivemq.client.mqtt.datatypes._
-import com.hivemq.client.mqtt.mqtt3._
-import com.hivemq.client.mqtt.mqtt3.message.auth._
 import com.hivemq.client.mqtt.mqtt3.message.connect.connack.Mqtt3ConnAck
 import com.hivemq.client.mqtt.mqtt3.message.publish.Mqtt3Publish
 import com.hivemq.client.mqtt.mqtt3.message.subscribe.suback.Mqtt3SubAck
@@ -148,7 +150,7 @@ class HiveMQReceiver(
       val identifier = UUID.randomUUID().toString
 
       val (mqttHost, mqttPort) = hiveOptions.getHostAndPort
-      val builder = Mqtt3Client.builder()
+      val builder = new Mqtt3RxClientViewBuilder()
         .identifier(identifier)
         .serverHost(mqttHost)
         .serverPort(mqttPort)
@@ -161,8 +163,7 @@ class HiveMQReceiver(
       /* Application layer security */
 
       val (mqttUser, mqttPass) = hiveOptions.getUserAndPass
-      val simpleAuth = Mqtt3SimpleAuth
-        .builder()
+      val simpleAuth = new Mqtt3SimpleAuthViewBuilder.Default()
         .username(mqttUser)
         .password(mqttPass.getBytes(Charset.forName("UTF-8")))
         .build()
@@ -237,7 +238,7 @@ class HiveMQReceiver(
     val identifier = UUID.randomUUID().toString
 
     val (mqttHost, mqttPort) = hiveOptions.getHostAndPort
-    val builder = Mqtt5Client.builder()
+    val builder = new MqttRxClientBuilder()
       .identifier(identifier)
       .serverHost(mqttHost)
       .serverPort(mqttPort)
@@ -250,8 +251,7 @@ class HiveMQReceiver(
     /* Application layer security */
 
     val (mqttUser, mqttPass) = hiveOptions.getUserAndPass
-    val simpleAuth = Mqtt5SimpleAuth
-      .builder()
+    val simpleAuth = new MqttSimpleAuthBuilder.Default()
       .username(mqttUser)
       .password(mqttPass.getBytes(Charset.forName("UTF-8")))
       .build()
@@ -415,7 +415,7 @@ class HiveMQReceiver(
         Security.addProvider(new BouncyCastleProvider())
 
         val sslOptions = hiveOptions.getSslOptions
-        val builder = MqttClientSslConfig.builder()
+        val builder = new MqttClientSslConfigImplBuilder.Default()
 
         /* CipherSuites */
         val cipherSuites = sslOptions.getCipherSuites

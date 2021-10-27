@@ -16,6 +16,7 @@
         <maven.compiler.target>8</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <encoding>UTF-8</encoding>
 
         <ditto.version>1.0.0</ditto.version>
 
@@ -78,7 +79,7 @@
                 <artifactId>scala-maven-plugin</artifactId>
                 <version>4.4.0</version>
                 <configuration>
-                    <scalaVersion>2.11.11</scalaVersion>
+                    <scalaVersion>2.11.12</scalaVersion>
                     <args>
                         <arg>-unchecked</arg>
                         <arg>-deprecation</arg>
