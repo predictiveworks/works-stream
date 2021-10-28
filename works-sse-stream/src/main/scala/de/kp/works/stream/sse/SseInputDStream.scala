@@ -1,6 +1,6 @@
 package de.kp.works.stream.sse
 /*
- * Copyright (c) 2020 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -18,29 +18,24 @@ package de.kp.works.stream.sse
  * 
  */
 
-import org.apache.spark.storage.StorageLevel
-
-import org.apache.spark.streaming.StreamingContext
-import org.apache.spark.streaming.dstream._
-
-import org.apache.spark.streaming.receiver.Receiver
-
 import okhttp3._
 import okhttp3.sse._
+import org.apache.spark.storage.StorageLevel
+import org.apache.spark.streaming.StreamingContext
+import org.apache.spark.streaming.dstream._
+import org.apache.spark.streaming.receiver.Receiver
 
-import de.kp.works.stream.ssl._
+import java.util.Properties
 
 class SseInputDStream(
     _ssc: StreamingContext,
-    storageLevel: StorageLevel,
-    serverUrl: String,
-    authToken: Option[String] = None,
-    sslOptions: Option[SslOptions] = None) extends ReceiverInputDStream[SseEvent](_ssc) {
+    properties: Properties,
+    storageLevel: StorageLevel) extends ReceiverInputDStream[String](_ssc) {
 
   override def name: String = s"Server Sent Events (SSE) stream [$id]"
   
-  def getReceiver(): Receiver[SseEvent] = {
-    new SseReceiver(storageLevel, serverUrl, authToken, sslOptions)
+  def getReceiver(): Receiver[String] = {
+    new SseReceiver(properties, storageLevel)
   }
   
 }
@@ -50,17 +45,17 @@ class SseInputDStream(
  * events from OpenCTI (threat intelligence)
  */
 class SseReceiver(
-    storageLevel: StorageLevel,
-    serverUrl: String,
-    authToken: Option[String],
-    sslOptions: Option[SslOptions] = None) extends Receiver[SseEvent](storageLevel) {
-  
+  properties: Properties,
+  storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
+
+  private val options = new SseOptions(properties)
+
   def onStop() {
   }
 
   def onStart() {
     
-    val sseClient = new SseClient(serverUrl, authToken, sslOptions)
+    val sseClient = new SseClient(options)
 
     val request = sseClient.getRequest
     val httpClient = sseClient.getHttpClient
@@ -80,7 +75,7 @@ class SseReceiver(
        */
       override def onEvent(eventSource:EventSource, id:String, `type`:String, data:String):Unit = {
         val result = new SseEvent(id, `type`, data)
-        store(result)        
+        store(result.toJson)
       }
       
       override def onClosed(eventSource:EventSource) {

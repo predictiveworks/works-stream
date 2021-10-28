@@ -23,10 +23,7 @@ import okhttp3._
 
 import javax.net.ssl.SSLContext
 
-class SseClient(
-   serverUrl: String,
-   authToken: Option[String],
-   sslOptions: Option[SslOptions] = None) {
+class SseClient(options:SseOptions) {
   /**
    * This is an internal helper method to create an OkHttpClient
    * that trusts all certificates
@@ -49,7 +46,7 @@ class SseClient(
       builder.build
 
     } catch {
-      case t:Throwable => null
+      case _:Throwable => null
     }
 
   }
@@ -58,10 +55,10 @@ class SseClient(
 
     try {
 
-      val options = sslOptions.get
+      val sslOptions = options.getSslOptions.get
 
-      val sslSocketFactory = options.getSslSocketFactory
-      val x509TrustManager = options.getTrustManagerFactory.getTrustManagers()(0).asInstanceOf[javax.net.ssl.X509TrustManager]
+      val sslSocketFactory = sslOptions.getSslSocketFactory
+      val x509TrustManager = sslOptions.getTrustManagerFactory.getTrustManagers()(0).asInstanceOf[javax.net.ssl.X509TrustManager]
 
       val builder = new OkHttpClient.Builder()
       builder.sslSocketFactory(sslSocketFactory, x509TrustManager)
@@ -69,12 +66,14 @@ class SseClient(
       builder.build
 
     } catch {
-      case t:Throwable => null
+      case _:Throwable => null
     }
 
   }
 
   def getHttpClient:OkHttpClient = {
+
+    val sslOptions = options.getSslOptions
 
     if (sslOptions.isDefined)
       createSafeClient
@@ -89,9 +88,10 @@ class SseClient(
      * Build request with an optional authentication token
      */
     val builder = new Request.Builder()
-      .url(serverUrl)
+      .url(options.getServerUrl)
 
     val request = {
+      val authToken = options.getAuthToken
       if (authToken.isDefined)
         builder
           .addHeader("Authorization", "Bearer " + authToken.get)

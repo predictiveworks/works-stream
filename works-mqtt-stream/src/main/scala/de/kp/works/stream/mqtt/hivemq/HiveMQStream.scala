@@ -18,7 +18,6 @@ package de.kp.works.stream.mqtt.hivemq
  * 
  */
 
-import de.kp.works.stream.mqtt.MqttEvent
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaStreamingContext}
@@ -34,26 +33,26 @@ object HiveMQStream {
    * Storage level of the data will be the default 
    * StorageLevel.MEMORY_AND_DISK_SER_2.
    */
-  def createStream(
+  def createDirectStream(
       jssc: JavaStreamingContext,
       properties: Properties): JavaReceiverInputDStream[String] = {
-    
-    createStream(jssc, properties, StorageLevel.MEMORY_AND_DISK_SER_2)
+
+    createDirectStream(jssc, properties, StorageLevel.MEMORY_AND_DISK_SER_2)
     
   }
 
-  def createStream(
+  def createDirectStream(
       jssc: JavaStreamingContext,
       properties: Properties,
       storageLevel: StorageLevel): JavaReceiverInputDStream[String] = {
-    
-    createStream(jssc.ssc, properties, storageLevel)
+
+    createDirectStream(jssc.ssc, properties, storageLevel)
     
   }
 
   /********** SCALA **********/
 
-  def createStream(
+  def createDirectStream(
     ssc: StreamingContext,
     properties: Properties,
     storageLevel: StorageLevel = StorageLevel.MEMORY_AND_DISK_SER_2): ReceiverInputDStream[String] = {

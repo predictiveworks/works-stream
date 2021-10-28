@@ -1,4 +1,7 @@
 package de.kp.works.stream.sse
+
+import com.google.gson.JsonObject
+
 /*
  * Copyright (c) 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -26,5 +29,17 @@ class SseEvent(
   def copy:SseEvent = {
     new SseEvent(sseId, sseType, sseData)
   }
-  
+
+  def toJson:String = {
+
+    val sseObj = new JsonObject
+    sseObj.addProperty("id", sseId)
+
+    sseObj.addProperty("type", sseType)
+    sseObj.addProperty("data", sseData)
+
+    sseObj.toString
+
+  }
+
 }

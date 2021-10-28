@@ -1,4 +1,4 @@
-package de.kp.works.stream.mqtt.paho
+package de.kp.works.stream.sse
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -18,48 +18,31 @@ package de.kp.works.stream.mqtt.paho
  *
  */
 
-import de.kp.works.stream.mqtt.MqttEvent
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext
-import org.apache.spark.streaming.api.java.{JavaReceiverInputDStream, JavaStreamingContext}
-import org.apache.spark.streaming.dstream.ReceiverInputDStream
+import org.apache.spark.streaming.api.java.{JavaInputDStream, JavaStreamingContext}
+import org.apache.spark.streaming.dstream.InputDStream
 
 import java.util.Properties
 
-object PahoStream {
-
-  /********** JAVA **********/
-
-  /**
-   * Storage level of the data will be the default
-   * StorageLevel.MEMORY_AND_DISK_SER_2.*
-   */
-  def createDirectStream(
-    jssc: JavaStreamingContext,
-    properties: Properties): JavaReceiverInputDStream[String] = {
-
-    createDirectStream(jssc.ssc, properties, StorageLevel.MEMORY_AND_DISK_SER_2)
-
-  }
+object SseStream {
 
   def createDirectStream(
     jssc: JavaStreamingContext,
     properties: Properties,
-    storageLevel: StorageLevel): JavaReceiverInputDStream[String] = {
+    storageLevel: StorageLevel): JavaInputDStream[String] = {
 
-    createDirectStream(jssc.ssc, properties, storageLevel)
+    new JavaInputDStream(createDirectStream(jssc.ssc, properties, storageLevel))
 
   }
 
-  /********** SCALA **********/
-
-   def createDirectStream(
+  private def createDirectStream(
     ssc: StreamingContext,
-    properties:Properties,
-    storageLevel: StorageLevel): ReceiverInputDStream[String] = {
+    properties: Properties,
+    storageLevel: StorageLevel): InputDStream[String] = {
 
-    new MqttInputDStream(ssc, properties, storageLevel)
+    new SseInputDStream(ssc, properties, storageLevel)
 
-   }
+  }
 
 }
