@@ -18,7 +18,7 @@ package de.kp.works.stream.fiware
  *
  */
 
-import akka.actor.ActorSystem
+import akka.actor.{ActorSystem, Props}
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.model.ContentTypes._
 import akka.http.scaladsl.model.HttpResponse
@@ -104,7 +104,15 @@ class FiwareMonitor(options:FiwareOptions, handler:FiwareHandler) {
 
   }
 
-  private def buildRoute:Route = ???
+  private def buildRoute:Route = {
+
+    lazy val fiwareActor = system
+      .actorOf(Props(new FiwareActor(options, handler)), FiwareActor.ACTOR_NAME)
+
+    val routes = new FiwareRoutes(fiwareActor)
+    routes.notifications
+
+  }
   /**
    * In [[akka-http]] version 10.0.x is no difference between
    * client and service side HTTPS context

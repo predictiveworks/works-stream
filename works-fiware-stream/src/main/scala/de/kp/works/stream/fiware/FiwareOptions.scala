@@ -30,6 +30,44 @@ class FiwareOptions(properties:Properties) {
 
   val settings:Map[String,String] = properties.asScala.toMap
 
+  /**
+   * ACTOR SPECIFIC CONFIGURATIONS
+   */
+
+  /**
+   * Timeout in seconds
+   */
+  def getActorTimeout:Int = 5
+  /**
+   * Parameters to control the handling of failed child actors:
+   * it is the number of retries within a certain time window.
+   *
+   * The supervisor strategy restarts a child up to 10 restarts
+   * per minute. The child actor is stopped if the restart count
+   * exceeds maxRetries during the withinTimeRange duration.
+   *
+   */
+  def getActorMaxRetries:Int = 10
+  /**
+   * Time range in minutes
+   */
+  def getActorTimeRange:Int = 1
+  /**
+   * Child actors are defined leveraging a RoundRobin pool with a
+   * dynamic resizer. The boundaries of the resizer are defined
+   * below
+   */
+  def getActorLowerBound = 2
+  def getActorUpperBound = 100
+
+  /**
+   * The number of instances for the RoundRobin pool
+   */
+  def getActorInstances = 50
+
+  /**
+   * EXTERNAL CONFIGURATION
+   */
   def getBinding:HttpBinding = ???
 
   def getBrokerUrl:String = ???
