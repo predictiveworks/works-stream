@@ -30,19 +30,14 @@ import org.eclipse.ditto.model.things.ThingId
 
 object DittoClient {
 
-  def build(properties:Properties):DittoClient =
-    new DittoClient(properties)
+  def build(properties:Properties, store:String => Unit):DittoClient =
+    new DittoClient(properties, store)
 
 }
 
-class DittoClient(properties:Properties) {
+class DittoClient(properties:Properties, store:String => Unit) {
 
   private var client:EclipseClient = _
-  private var receiver:DittoReceiver = _
-
-  def setReceiver(receiver:DittoReceiver):Unit = {
-    this.receiver = receiver
-  }
 
   def disconnect(): Unit = {
 
@@ -149,7 +144,7 @@ class DittoClient(properties:Properties) {
           override def accept(change:ThingChange):Unit = {
 
             val gson = DittoGson.thing2Gson(change)
-            if (gson != null) receiver.store(gson)
+            if (gson != null) store(gson)
 
           }
         }
@@ -183,7 +178,7 @@ class DittoClient(properties:Properties) {
           override def accept(change:FeaturesChange):Unit = {
 
             val gson = DittoGson.features2Gson(change)
-            receiver.store(gson)
+            store(gson)
 
           }
         }
@@ -222,7 +217,7 @@ class DittoClient(properties:Properties) {
           override def accept(change:FeatureChange):Unit = {
 
             val gson = DittoGson.feature2Gson(change)
-            receiver.store(new Gson().toJson(gson))
+            store(new Gson().toJson(gson))
 
           }
         }
@@ -276,7 +271,7 @@ class DittoClient(properties:Properties) {
             val gson = DittoGson.message2Gson(message)
             if (gson != null) {
 
-              receiver.store(gson)
+              store(gson)
               message.reply().statusCode(HttpStatusCode.OK).send()
 
             } else {

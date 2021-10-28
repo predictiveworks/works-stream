@@ -1,7 +1,7 @@
 package de.kp.works.stream.opencti
 
 /*
- * Copyright (c) 2019 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -20,5 +20,22 @@ package de.kp.works.stream.opencti
  */
 
 object CTINames {
+
+  val AUTH_TOKEN  = "opencti.auth.token"
+  val NUM_THREADS = "opencti.num.threads"
+  val SERVER_URL  = "opencti.server.url"
+
+  /* SSL SUPPORT */
+
+  val SSL_CIPHER_SUITES   = "ssl.cipher.suites"
+  val SSL_KEYSTORE_ALGO   = "ssl.keystore.algorithm"
+  val SSL_KEYSTORE_FILE   = "ssl.keystore.file"
+  val SSL_KEYSTORE_PASS   = "ssl.keystore.password"
+  val SSL_KEYSTORE_TYPE   = "ssl.keystore.type"
+  val SSL_PROTOCOL        = "ssl.protocol"
+  val SSL_TRUSTSTORE_ALGO = "ssl.truststore.algorithm"
+  val SSL_TRUSTSTORE_FILE = "ssl.truststore.file"
+  val SSL_TRUSTSTORE_PASS = "ssl.truststore.password"
+  val SSL_TRUSTSTORE_TYPE = "ssl.truststore.type"
 
 }

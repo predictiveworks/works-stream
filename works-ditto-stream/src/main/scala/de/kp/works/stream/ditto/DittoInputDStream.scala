@@ -48,8 +48,7 @@ class DittoReceiver(
   }
 
   def onStart() {
-    client = DittoClient.build(properties)
-    client.setReceiver(this)
+    client = DittoClient.build(properties, store)
   }
 
 }

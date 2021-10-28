@@ -26,12 +26,96 @@ class CTIOptions(properties:Properties) {
 
   val settings:Map[String,String] = properties.asScala.toMap
 
-  def getAuthToken:Option[String] = ???
+  def getAuthToken:Option[String] =
+    settings.get(CTINames.AUTH_TOKEN)
 
-  def getNumThreads:Int = ???
+  def getNumThreads:Int = {
+    settings.getOrElse(CTINames.NUM_THREADS, "1").toInt
+  }
 
-  def getServerUrl:String = ???
+  def getServerUrl:String =
+    settings(CTINames.SERVER_URL)
 
-  def getSslOptions:Option[SslOptions] = ???
+  def getSslOptions:Option[SslOptions] = {
+
+    try {
+      val tlsVersion = settings
+        .getOrElse(CTINames.SSL_PROTOCOL, "TLS")
+
+      /*
+       * The keystore file must be defined
+       */
+      val keyStoreFile = settings
+        .getOrElse(CTINames.SSL_KEYSTORE_FILE,
+          throw new Exception(s"No keystore file specified."))
+      /*
+       * - JKS      Java KeyStore
+       * - JCEKS    Java Cryptography Extension KeyStore
+       * - PKCS #12 Public-Key Cryptography Standards #12 KeyStore
+       * - BKS      Bouncy Castle KeyStore
+       * - BKS-V1   Older and incompatible version of Bouncy Castle KeyStore
+       */
+      val keyStoreType = settings
+        .getOrElse(CTINames.SSL_KEYSTORE_TYPE, "JKS")
+
+      val keyStorePass = settings
+        .getOrElse(CTINames.SSL_KEYSTORE_PASS, "")
+
+      val keyStoreAlgo = settings
+        .getOrElse(CTINames.SSL_KEYSTORE_ALGO, "SunX509")
+
+      val trustStoreFile = settings.get(CTINames.SSL_TRUSTSTORE_FILE)
+      /*
+       * - JKS      Java KeyStore
+       * - JCEKS    Java Cryptography Extension KeyStore
+       * - PKCS #12 Public-Key Cryptography Standards #12 KeyStore
+       * - BKS      Bouncy Castle KeyStore
+       * - BKS-V1   Older and incompatible version of Bouncy Castle KeyStore
+       */
+      val trustStoreType = settings
+        .getOrElse(CTINames.SSL_TRUSTSTORE_TYPE, "JKS")
+
+      val trustStorePass = settings
+        .getOrElse(CTINames.SSL_TRUSTSTORE_PASS, "")
+
+      val trustStoreAlgo = settings
+        .getOrElse(CTINames.SSL_TRUSTSTORE_ALGO, "SunX509")
+
+      val cipherSuites = settings
+        .getOrElse(CTINames.SSL_CIPHER_SUITES, "")
+        .split(",").map(_.trim).toList
+
+      val sslOptions = if (trustStoreFile.isEmpty) {
+        SslOptions.Builder.buildStoreOptions(
+          tlsVersion,
+          keyStoreFile,
+          keyStoreType,
+          keyStorePass,
+          keyStoreAlgo,
+          cipherSuites
+        )
+      }
+      else {
+        SslOptions.Builder.buildStoreOptions(
+          tlsVersion,
+          keyStoreFile,
+          keyStoreType,
+          keyStorePass,
+          keyStoreAlgo,
+          trustStoreFile.get,
+          trustStoreType,
+          trustStorePass,
+          trustStoreAlgo,
+          cipherSuites)
+
+      }
+
+      Some(sslOptions)
+
+    } catch {
+      case _:Throwable => None
+    }
+
+  }
 
 }
