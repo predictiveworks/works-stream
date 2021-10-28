@@ -47,7 +47,7 @@ import java.util.{Date, Properties, UUID}
 class HiveMQInputDStream(
   _ssc: StreamingContext,
   properties: Properties,
-  storageLevel: StorageLevel)  extends ReceiverInputDStream[MqttEvent](_ssc) {
+  storageLevel: StorageLevel)  extends ReceiverInputDStream[String](_ssc) {
  
   override def name: String = s"HiveMQ stream [$id]"
 
@@ -55,7 +55,7 @@ class HiveMQInputDStream(
    * Gets the receiver object that will be sent to the
    * worker nodes to receive data.
    */
-  def getReceiver(): Receiver[MqttEvent] = {
+  def getReceiver(): Receiver[String] = {
     new HiveMQReceiver(properties, storageLevel)
   }
     
@@ -63,7 +63,7 @@ class HiveMQInputDStream(
 
 class HiveMQReceiver(
   properties: Properties,
-  storageLevel: StorageLevel) extends Receiver[MqttEvent](storageLevel) {
+  storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
   
   private final val LOG = LoggerFactory.getLogger(classOf[HiveMQReceiver])
 
@@ -95,7 +95,7 @@ class HiveMQReceiver(
     val dimension = tokens.last
 
     val result = new MqttEvent(timestamp, seconds, mqttTopic, qos, duplicate, retained, payload, digest, json, context, dimension)
-    store(result)
+    store(result.toJson)
 
   }
     

@@ -25,6 +25,8 @@
 
     <dependencies>
 
+        <!-- WORKS SSL
+        -->
         <dependency>
             <groupId>de.kp.works</groupId>
             <artifactId>works-ssl-stream</artifactId>

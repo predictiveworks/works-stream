@@ -1,9 +1,6 @@
-package de.kp.works.stream.mqtt
-
-import com.google.gson.JsonObject
-
+package de.kp.works.stream.things
 /*
- * Copyright (c) 2020 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -16,12 +13,14 @@ import com.google.gson.JsonObject
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * @author Stefan Krusche, Dr. Krusche & Partner PartG
- * 
+ *
  */
 
-class MqttEvent (
+import com.google.gson.JsonObject
+
+class ThingsEvent(
     /* The timestamp in milli seconds 
      * the message arrived 
      */
@@ -65,9 +64,9 @@ class MqttEvent (
      */
     val dimension: String) extends Serializable {
   
-  def copy():MqttEvent = {
+  def copy():ThingsEvent = {
 
-    new MqttEvent(
+    new ThingsEvent(
       timestamp,
       seconds,
       topic,
@@ -82,7 +81,7 @@ class MqttEvent (
 
   }
 
-  def toJson:String = {
+  def toJson:JsonObject = {
 
     val mqttObj = new JsonObject
     mqttObj.addProperty("timestamp", timestamp)
@@ -101,8 +100,7 @@ class MqttEvent (
 
     mqttObj.addProperty("dimension", dimension)
 
-    mqttObj.toString
+    mqttObj
 
   }
-
 }

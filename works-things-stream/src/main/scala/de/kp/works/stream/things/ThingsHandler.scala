@@ -18,10 +18,10 @@ package de.kp.works.stream.things
  *
  */
 
-import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 
 class ThingsHandler(options:ThingsOptions, store:String => Unit) {
 
-  def sendThingsEvent(eventType:String, eventElement:JsonElement):Unit = ???
+  def sendThingsEvent(mqttObj:JsonObject):Unit = ???
 
 }

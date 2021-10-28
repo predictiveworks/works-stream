@@ -30,7 +30,6 @@ import java.nio.charset.Charset
 import java.security.MessageDigest
 import java.util.{Date, Properties}
 
-
 /**
  * MQTT v3.1 & MQTT v3.1.1
  * 
@@ -60,18 +59,18 @@ import java.util.{Date, Properties}
 class MqttInputDStream(
     _ssc: StreamingContext,
     properties:Properties,
-    storageLevel: StorageLevel) extends ReceiverInputDStream[MqttEvent](_ssc) {
+    storageLevel: StorageLevel) extends ReceiverInputDStream[String](_ssc) {
 
   override def name: String = s"MQTT stream [$id]"
 
-  def getReceiver(): Receiver[MqttEvent] = {
+  def getReceiver(): Receiver[String] = {
     new MqttReceiver(properties, storageLevel)
   }
 }
 
 class MqttReceiver(
   properties:Properties,
-  storageLevel: StorageLevel) extends Receiver[MqttEvent](storageLevel) {
+  storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
 
   private val pahoOptions = new PahoOptions(properties)
 
@@ -137,13 +136,13 @@ class MqttReceiver(
           val serialized = Seq(topic, json).mkString("|")
           val digest = MD5.digest(serialized.getBytes).toString
          
-  			    val tokens = topic.split("\\/").toList
+          val tokens = topic.split("\\/").toList
   			  
-  			    val context = MD5.digest(tokens.init.mkString("/").getBytes).toString
-  			    val dimension = tokens.last
+          val context = MD5.digest(tokens.init.mkString("/").getBytes).toString
+          val dimension = tokens.last
          
           val result = new MqttEvent(timestamp, seconds, topic, qos, duplicate, retained, payload, digest, json, context, dimension)
-          store(result)
+          store(result.toJson)
           
         }
         

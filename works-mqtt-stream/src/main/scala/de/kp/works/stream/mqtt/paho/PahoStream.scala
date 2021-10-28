@@ -36,7 +36,7 @@ object PahoStream {
    */
   def createStream(
     jssc: JavaStreamingContext,
-    properties: Properties): JavaReceiverInputDStream[MqttEvent] = {
+    properties: Properties): JavaReceiverInputDStream[String] = {
 
     createStream(jssc.ssc, properties, StorageLevel.MEMORY_AND_DISK_SER_2)
 
@@ -45,7 +45,7 @@ object PahoStream {
   def createStream(
     jssc: JavaStreamingContext,
     properties: Properties,
-    storageLevel: StorageLevel): JavaReceiverInputDStream[MqttEvent] = {
+    storageLevel: StorageLevel): JavaReceiverInputDStream[String] = {
 
     createStream(jssc.ssc, properties, storageLevel)
 
@@ -56,7 +56,7 @@ object PahoStream {
    def createStream(
     ssc: StreamingContext,
     properties:Properties,
-    storageLevel: StorageLevel): ReceiverInputDStream[MqttEvent] = {
+    storageLevel: StorageLevel): ReceiverInputDStream[String] = {
 
     new MqttInputDStream(ssc, properties, storageLevel)
 

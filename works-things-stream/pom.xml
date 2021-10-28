@@ -18,7 +18,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
 
+        <paho.version>1.2.2</paho.version>
+
     </properties>
+
+    <dependencies>
+
+        <!-- WORKS SSL
+        -->
+        <dependency>
+            <groupId>de.kp.works</groupId>
+            <artifactId>works-ssl-stream</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+
+        <!-- ECLIPSE PAHO
+        -->
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>${paho.version}</version>
+        </dependency>
+
+    </dependencies>
 
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
