@@ -18,13 +18,32 @@ package de.kp.works.stream.fiware
  *
  */
 
+import com.google.gson.JsonArray
+import de.kp.works.stream.ssl.SslOptions
+
 import java.util.Properties
 import scala.collection.JavaConverters._
+
+case class HttpBinding(host:String, port:Int)
 
 class FiwareOptions(properties:Properties) {
 
   val settings:Map[String,String] = properties.asScala.toMap
 
+  def getBinding:HttpBinding = ???
+
+  def getBrokerUrl:String = ???
+
+  def isFiwareSsl:Boolean = ???
+
+  def getFiwareSslOptions:Option[SslOptions] = ???
+
   def getNumThreads:Int = ???
+
+  def isServerSsl:Boolean = ???
+
+  def getServerSslOptions:Option[SslOptions] = ???
+
+  def getSubscriptions:JsonArray = ???
 
 }

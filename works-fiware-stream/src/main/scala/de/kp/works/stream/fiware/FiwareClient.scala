@@ -30,16 +30,19 @@ object FiwareClient {
 class FiwareClient(properties:Properties, store:String => Unit) {
 
   private var listener:FiwareListener = _
+  private var monitor:FiwareMonitor = _
+
   private val options = new FiwareOptions(properties)
 
   def disconnect():Unit = {
     if (listener != null) listener.stop()
+    if (monitor != null) monitor.stop()
   }
 
   def connect():Unit = {
 
     val numThreads = options.getNumThreads
-    val monitor = new FiwareMonitor(options, new FiwareHandler(options, store))
+    monitor = new FiwareMonitor(options, new FiwareHandler(options, store))
 
     listener = new FiwareListener(monitor, numThreads)
     listener.start()
