@@ -18,7 +18,7 @@ package de.kp.works.stream.fiware
  *
  */
 
-import com.google.gson.JsonArray
+import com.google.gson.{JsonArray, JsonParser}
 import de.kp.works.stream.ssl.SslOptions
 
 import java.util.Properties
@@ -68,20 +68,227 @@ class FiwareOptions(properties:Properties) {
   /**
    * EXTERNAL CONFIGURATION
    */
-  def getBinding:HttpBinding = ???
+  def getBinding:HttpBinding = {
 
-  def getBrokerUrl:String = ???
+    val host = settings(FiwareNames.SERVER_HOST)
+    val port = settings(FiwareNames.SERVER_PORT).toInt
 
-  def isFiwareSsl:Boolean = ???
+    HttpBinding(host, port)
 
-  def getFiwareSslOptions:Option[SslOptions] = ???
+  }
 
-  def getNumThreads:Int = ???
+  def getBrokerUrl:String =
+    settings(FiwareNames.BROKER_URL)
 
-  def isServerSsl:Boolean = ???
+  /**
+   * This method returns `true` if at least
+   * one SSL configuration key is provided
+   */
+  def isFiwareSsl:Boolean = {
 
-  def getServerSslOptions:Option[SslOptions] = ???
+    var fiwareSsl:Boolean = false
 
-  def getSubscriptions:JsonArray = ???
+    settings.keys.foreach(key => {
+      if (key.startsWith("fiware.broker.ssl."))
+        fiwareSsl = true
+    })
+
+    fiwareSsl
+
+  }
+
+  def getFiwareSslOptions:Option[SslOptions] = {
+
+    try {
+      val tlsVersion = settings
+        .getOrElse(FiwareNames.BROKER_SSL_PROTOCOL, "TLS")
+
+      /*
+       * The keystore file must be defined
+       */
+      val keyStoreFile = settings
+        .getOrElse(FiwareNames.BROKER_SSL_KEYSTORE_FILE,
+          throw new Exception(s"No keystore file specified."))
+      /*
+       * - JKS      Java KeyStore
+       * - JCEKS    Java Cryptography Extension KeyStore
+       * - PKCS #12 Public-Key Cryptography Standards #12 KeyStore
+       * - BKS      Bouncy Castle KeyStore
+       * - BKS-V1   Older and incompatible version of Bouncy Castle KeyStore
+       */
+      val keyStoreType = settings
+        .getOrElse(FiwareNames.BROKER_SSL_KEYSTORE_TYPE, "JKS")
+
+      val keyStorePass = settings
+        .getOrElse(FiwareNames.BROKER_SSL_KEYSTORE_PASS, "")
+
+      val keyStoreAlgo = settings
+        .getOrElse(FiwareNames.BROKER_SSL_KEYSTORE_ALGO, "SunX509")
+
+      val trustStoreFile = settings.get(FiwareNames.BROKER_SSL_TRUSTSTORE_FILE)
+      /*
+       * - JKS      Java KeyStore
+       * - JCEKS    Java Cryptography Extension KeyStore
+       * - PKCS #12 Public-Key Cryptography Standards #12 KeyStore
+       * - BKS      Bouncy Castle KeyStore
+       * - BKS-V1   Older and incompatible version of Bouncy Castle KeyStore
+       */
+      val trustStoreType = settings
+        .getOrElse(FiwareNames.BROKER_SSL_TRUSTSTORE_TYPE, "JKS")
+
+      val trustStorePass = settings
+        .getOrElse(FiwareNames.BROKER_SSL_TRUSTSTORE_PASS, "")
+
+      val trustStoreAlgo = settings
+        .getOrElse(FiwareNames.BROKER_SSL_TRUSTSTORE_ALGO, "SunX509")
+
+      val cipherSuites = settings
+        .getOrElse(FiwareNames.BROKER_SSL_CIPHER_SUITES, "")
+        .split(",").map(_.trim).toList
+
+      val sslOptions = if (trustStoreFile.isEmpty) {
+        SslOptions.Builder.buildStoreOptions(
+          tlsVersion,
+          keyStoreFile,
+          keyStoreType,
+          keyStorePass,
+          keyStoreAlgo,
+          cipherSuites
+        )
+      }
+      else {
+        SslOptions.Builder.buildStoreOptions(
+          tlsVersion,
+          keyStoreFile,
+          keyStoreType,
+          keyStorePass,
+          keyStoreAlgo,
+          trustStoreFile.get,
+          trustStoreType,
+          trustStorePass,
+          trustStoreAlgo,
+          cipherSuites)
+
+      }
+
+      Some(sslOptions)
+
+    } catch {
+      case _:Throwable => None
+    }
+
+  }
+
+  def getNumThreads:Int =
+    settings.getOrElse(FiwareNames.NUM_THREADS, "1").toInt
+
+  /**
+   * This method returns `true` if at least
+   * one SSL configuration key is provided
+   */
+  def isServerSsl:Boolean = {
+
+    var serverSsl:Boolean = false
+
+    settings.keys.foreach(key => {
+      if (key.startsWith("fiware.server.ssl."))
+        serverSsl = true
+    })
+
+    serverSsl
+
+  }
+
+  def getServerSslOptions:Option[SslOptions] = {
+
+    try {
+      val tlsVersion = settings
+        .getOrElse(FiwareNames.SERVER_SSL_PROTOCOL, "TLS")
+
+      /*
+       * The keystore file must be defined
+       */
+      val keyStoreFile = settings
+        .getOrElse(FiwareNames.SERVER_SSL_KEYSTORE_FILE,
+          throw new Exception(s"No keystore file specified."))
+      /*
+       * - JKS      Java KeyStore
+       * - JCEKS    Java Cryptography Extension KeyStore
+       * - PKCS #12 Public-Key Cryptography Standards #12 KeyStore
+       * - BKS      Bouncy Castle KeyStore
+       * - BKS-V1   Older and incompatible version of Bouncy Castle KeyStore
+       */
+      val keyStoreType = settings
+        .getOrElse(FiwareNames.SERVER_SSL_KEYSTORE_TYPE, "JKS")
+
+      val keyStorePass = settings
+        .getOrElse(FiwareNames.SERVER_SSL_KEYSTORE_PASS, "")
+
+      val keyStoreAlgo = settings
+        .getOrElse(FiwareNames.SERVER_SSL_KEYSTORE_ALGO, "SunX509")
+
+      val trustStoreFile = settings.get(FiwareNames.SERVER_SSL_TRUSTSTORE_FILE)
+      /*
+       * - JKS      Java KeyStore
+       * - JCEKS    Java Cryptography Extension KeyStore
+       * - PKCS #12 Public-Key Cryptography Standards #12 KeyStore
+       * - BKS      Bouncy Castle KeyStore
+       * - BKS-V1   Older and incompatible version of Bouncy Castle KeyStore
+       */
+      val trustStoreType = settings
+        .getOrElse(FiwareNames.SERVER_SSL_TRUSTSTORE_TYPE, "JKS")
+
+      val trustStorePass = settings
+        .getOrElse(FiwareNames.SERVER_SSL_TRUSTSTORE_PASS, "")
+
+      val trustStoreAlgo = settings
+        .getOrElse(FiwareNames.SERVER_SSL_TRUSTSTORE_ALGO, "SunX509")
+
+      val cipherSuites = settings
+        .getOrElse(FiwareNames.SERVER_SSL_CIPHER_SUITES, "")
+        .split(",").map(_.trim).toList
+
+      val sslOptions = if (trustStoreFile.isEmpty) {
+        SslOptions.Builder.buildStoreOptions(
+          tlsVersion,
+          keyStoreFile,
+          keyStoreType,
+          keyStorePass,
+          keyStoreAlgo,
+          cipherSuites
+        )
+      }
+      else {
+        SslOptions.Builder.buildStoreOptions(
+          tlsVersion,
+          keyStoreFile,
+          keyStoreType,
+          keyStorePass,
+          keyStoreAlgo,
+          trustStoreFile.get,
+          trustStoreType,
+          trustStorePass,
+          trustStoreAlgo,
+          cipherSuites)
+
+      }
+
+      Some(sslOptions)
+
+    } catch {
+      case _:Throwable => None
+    }
+
+  }
+
+  def getSubscriptions:JsonArray = {
+
+    if (!settings.contains(FiwareNames.BROKER_SUBSCRIPTIONS))
+      throw new Exception("No Fiware subscriptions provided")
+
+    val subscriptions = settings(FiwareNames.BROKER_SUBSCRIPTIONS)
+    JsonParser.parseString(subscriptions).getAsJsonArray
+
+  }
 
 }

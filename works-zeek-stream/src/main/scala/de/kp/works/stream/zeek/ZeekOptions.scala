@@ -1,7 +1,7 @@
 package de.kp.works.stream.zeek
 
 /*
- * Copyright (c) 2019 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -26,22 +26,44 @@ class ZeekOptions(properties:Properties) {
 
   val settings:Map[String,String] = properties.asScala.toMap
 
-  def getLogFolder:String = ???
+  /*
+   * The parent file system folder path that contains
+   * Zeek log files
+   */
+  def getLogFolder:String =
+    settings(ZeekNames.LOG_FOLDER)
 
-  def getLogPostfix:String = ???
+  /*
+   * The file name postfix used to identify Zeek log
+   * files
+   */
+  def getLogPostfix:String = {
+    settings.getOrElse(ZeekNames.LOG_POSTFIX, ".log")
+  }
+  /*
+   * The buffer size of the monitor for file system
+   */
+  def getMaxBufferSize:Int =
+    settings.getOrElse(ZeekNames.MAX_BUFFER_SIZE, "1000").toInt
 
-  def getMaxBufferSize:Int = ???
+  /*
+   * The maximum number of bytes of a file line
+   */
+  def getMaxLineSize:Int =
+    settings.getOrElse(ZeekNames.MAX_LINE_SIZE, "8192").toInt
 
-  def getMaxLineSize:Int = ???
+  def getNumThreads:Int =
+    settings.getOrElse(ZeekNames.NUM_THREADS, "1").toInt
 
-  def getNumThreads:Int = ???
   /*
    * The polling interval in seconds
    */
-  def getPollingInterval:Int = ???
+  def getPollingInterval:Int =
+    settings.getOrElse(ZeekNames.POLLING_INTERVAL, "1").toInt
   /*
-   * The Akka system name for the file monitor
+   * The name of the Akka actor system that defines the
+   * backend of this receiver
    */
-  def getSystemName:String = ???
+  def getSystemName:String = "zeek-monitor"
 
 }

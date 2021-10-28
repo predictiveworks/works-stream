@@ -20,5 +20,32 @@ package de.kp.works.stream.fleet
  */
 
 object FleetNames {
+  /*
+   * The parent file system folder path that contains
+   * Fleet log files
+   */
+  val LOG_FOLDER  = "fleet.folder"
+  /*
+   * The file name postfix used to identify Fleet log
+   * files
+   */
+  val LOG_POSTFIX = "fleet.postfix"
+  /*
+   * The buffer size of the Fleet monitor for file system
+   * events
+   */
+  val MAX_BUFFER_SIZE = "fleet.max.buffer.size"
+  /*
+   * The maximum number of bytes of a file line
+   */
+  val MAX_LINE_SIZE = "fleet.max.line.size"
+  /*
+   * The number of threads used by the Fleet listener
+   */
+  val NUM_THREADS = "fleet.num.threads"
+  /*
+   * The polling interval of the Fleet monitor in seconds
+   */
+  val POLLING_INTERVAL = "fleet.polling.interval"
 
 }

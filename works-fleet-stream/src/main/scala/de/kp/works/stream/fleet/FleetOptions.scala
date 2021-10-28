@@ -25,23 +25,44 @@ import scala.collection.JavaConverters._
 class FleetOptions(properties:Properties) {
 
   val settings:Map[String,String] = properties.asScala.toMap
+  /*
+   * The parent file system folder path that contains
+   * Fleet log files
+   */
+  def getLogFolder:String =
+    settings(FleetNames.LOG_FOLDER)
 
-  def getLogFolder:String = ???
+  /*
+   * The file name postfix used to identify Fleet log
+   * files
+   */
+  def getLogPostfix:String = {
+    settings.getOrElse(FleetNames.LOG_POSTFIX, ".log")
+  }
+  /*
+   * The buffer size of the Fleet monitor for file system
+   */
+  def getMaxBufferSize:Int =
+    settings.getOrElse(FleetNames.MAX_BUFFER_SIZE, "1000").toInt
 
-  def getLogPostfix:String = ???
+  /*
+   * The maximum number of bytes of a file line
+   */
+  def getMaxLineSize:Int =
+    settings.getOrElse(FleetNames.MAX_LINE_SIZE, "8192").toInt
 
-  def getMaxBufferSize:Int = ???
+  def getNumThreads:Int =
+    settings.getOrElse(FleetNames.NUM_THREADS, "1").toInt
 
-  def getMaxLineSize:Int = ???
-
-  def getNumThreads:Int = ???
   /*
    * The polling interval in seconds
    */
-  def getPollingInterval:Int = ???
+  def getPollingInterval:Int =
+    settings.getOrElse(FleetNames.POLLING_INTERVAL, "1").toInt
   /*
-   * The Akka system name for the file monitor
+   * The name of the Akka actor system that defines the
+   * backend of Fleet monitor
    */
-  def getSystemName:String = ???
+  def getSystemName:String = "fleet-monitor"
 
 }
