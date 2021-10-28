@@ -1,4 +1,4 @@
-package de.kp.works.stream.fiware
+package de.kp.works.stream.things
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -24,31 +24,31 @@ import org.apache.spark.streaming.receiver.Receiver
 
 import java.util.Properties
 
-class FiwareInputDStream(
+class ThingsInputDStream(
   ssc_ : StreamingContext,
   properties: Properties,
   storageLevel: StorageLevel) extends ReceiverInputDStream[String](ssc_) {
   
-  override def name: String = s"FIWARE notification stream [$id]"
+  override def name: String = s"ThingsBoard gateway event stream [$id]"
   
   def getReceiver(): Receiver[String] = {
-    new FiwareReceiver(properties, storageLevel)
+    new ThingsReceiver(properties, storageLevel)
   }
 
 }
 
-class FiwareReceiver(
+class ThingsReceiver(
     properties: Properties,
     storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
 
-  private var client:FiwareClient = _
+  private var client:ThingsClient = _
 
   def onStop() {
     if (client != null) client.disconnect()
   }
 
   def onStart() {
-    client = FiwareClient.build(properties, store)
+    client = ThingsClient.build(properties, store)
   }
 
 }

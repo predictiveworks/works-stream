@@ -1,6 +1,6 @@
 package de.kp.works.stream.opencti
 /*
- * Copyright (c) 2019 Dr. Krusche & Partner PartG. All rights reserved.
+ * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -22,25 +22,28 @@ import java.util.Properties
 
 object CTIClient {
 
-  def build(properties:Properties): CTIClient =
-    new CTIClient(properties)
+  def build(properties:Properties, store:String => Unit): CTIClient =
+    new CTIClient(properties, store)
 
 }
 
-class CTIClient(properties:Properties) {
+class CTIClient(properties:Properties, store:String => Unit) {
 
-  private var receiver:CTIReceiver = _
-  private val ctiOptions = new CTIOptions(properties)
+  private var listener:CTIListener = _
+  private val options = new CTIOptions(properties)
 
   def disconnect():Unit = {
-
+    if (listener != null) listener.stop()
   }
 
   def connect():Unit = {
 
+    val numThreads = options.getNumThreads
+    val monitor = new CTIMonitor(options, new CTIHandler(options, store))
+
+    listener = new CTIListener(monitor, numThreads)
+    listener.start()
+
   }
 
-  def setReceiver(receiver:CTIReceiver):Unit = {
-    this.receiver = receiver
-  }
 }

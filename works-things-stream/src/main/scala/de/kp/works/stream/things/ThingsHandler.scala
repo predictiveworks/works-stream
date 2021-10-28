@@ -1,4 +1,4 @@
-package de.kp.works.stream.fiware
+package de.kp.works.stream.things
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -18,32 +18,10 @@ package de.kp.works.stream.fiware
  *
  */
 
-import java.util.Properties
+import com.google.gson.JsonElement
 
-object FiwareClient {
+class ThingsHandler(options:ThingsOptions, store:String => Unit) {
 
-  def build(properties:Properties, store:String => Unit): FiwareClient =
-    new FiwareClient(properties, store)
-
-}
-
-class FiwareClient(properties:Properties, store:String => Unit) {
-
-  private var listener:FiwareListener = _
-  private val options = new FiwareOptions(properties)
-
-  def disconnect():Unit = {
-    if (listener != null) listener.stop()
-  }
-
-  def connect():Unit = {
-
-    val numThreads = options.getNumThreads
-    val monitor = new FiwareMonitor(options, new FiwareHandler(options, store))
-
-    listener = new FiwareListener(monitor, numThreads)
-    listener.start()
-
-  }
+  def sendThingsEvent(eventType:String, eventElement:JsonElement):Unit = ???
 
 }

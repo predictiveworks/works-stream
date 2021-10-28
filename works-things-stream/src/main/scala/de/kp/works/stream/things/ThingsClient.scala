@@ -1,4 +1,5 @@
-package de.kp.works.stream.fiware
+package de.kp.works.stream.things
+
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -20,17 +21,17 @@ package de.kp.works.stream.fiware
 
 import java.util.Properties
 
-object FiwareClient {
+object ThingsClient {
 
-  def build(properties:Properties, store:String => Unit): FiwareClient =
-    new FiwareClient(properties, store)
+  def build(properties:Properties, store:String => Unit): ThingsClient =
+    new ThingsClient(properties, store)
 
 }
 
-class FiwareClient(properties:Properties, store:String => Unit) {
+class ThingsClient(properties:Properties, store:String => Unit) {
 
-  private var listener:FiwareListener = _
-  private val options = new FiwareOptions(properties)
+  private var listener:ThingsListener = _
+  private val options = new ThingsOptions(properties)
 
   def disconnect():Unit = {
     if (listener != null) listener.stop()
@@ -39,9 +40,9 @@ class FiwareClient(properties:Properties, store:String => Unit) {
   def connect():Unit = {
 
     val numThreads = options.getNumThreads
-    val monitor = new FiwareMonitor(options, new FiwareHandler(options, store))
+    val monitor = new ThingsMonitor(options, new ThingsHandler(options, store))
 
-    listener = new FiwareListener(monitor, numThreads)
+    listener = new ThingsListener(monitor, numThreads)
     listener.start()
 
   }

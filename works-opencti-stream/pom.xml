@@ -18,8 +18,29 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
 
+        <okhttp.version>3.14.4</okhttp.version>
+
     </properties>
 
+    <dependencies>
+
+        <!-- WORKS SSL
+        -->
+        <dependency>
+            <groupId>de.kp.works</groupId>
+            <artifactId>works-ssl-stream</artifactId>
+            <version>0.4.0</version>
+        </dependency>
+
+        <!-- OKHTTP - SSE
+         -->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-sse</artifactId>
+            <version>${okhttp.version}</version>
+        </dependency>
+
+    </dependencies>
     <build>
         <sourceDirectory>src/main/scala</sourceDirectory>
         <pluginManagement>

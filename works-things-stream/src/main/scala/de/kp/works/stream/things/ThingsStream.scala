@@ -1,4 +1,4 @@
-package de.kp.works.stream.fiware
+package de.kp.works.stream.things
 /*
  * Copyright (c) 2019 - 2021 Dr. Krusche & Partner PartG. All rights reserved.
  *
@@ -13,42 +13,36 @@ package de.kp.works.stream.fiware
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
- * 
+ *
  * @author Stefan Krusche, Dr. Krusche & Partner PartG
- * 
+ *
  */
+
 import org.apache.spark.storage.StorageLevel
 import org.apache.spark.streaming.StreamingContext
-import org.apache.spark.streaming.dstream._
-import org.apache.spark.streaming.receiver.Receiver
+import org.apache.spark.streaming.api.java.{JavaInputDStream, JavaStreamingContext}
+import org.apache.spark.streaming.dstream.InputDStream
 
 import java.util.Properties
 
-class FiwareInputDStream(
-  ssc_ : StreamingContext,
-  properties: Properties,
-  storageLevel: StorageLevel) extends ReceiverInputDStream[String](ssc_) {
-  
-  override def name: String = s"FIWARE notification stream [$id]"
-  
-  def getReceiver(): Receiver[String] = {
-    new FiwareReceiver(properties, storageLevel)
-  }
+object ThingsStream {
 
-}
-
-class FiwareReceiver(
+  def createDirectStream(
+    jssc: JavaStreamingContext,
     properties: Properties,
-    storageLevel: StorageLevel) extends Receiver[String](storageLevel) {
+    storageLevel: StorageLevel): JavaInputDStream[String] = {
 
-  private var client:FiwareClient = _
+    new JavaInputDStream(createDirectStream(jssc.ssc, properties, storageLevel))
 
-  def onStop() {
-    if (client != null) client.disconnect()
   }
 
-  def onStart() {
-    client = FiwareClient.build(properties, store)
+  private def createDirectStream(
+    ssc: StreamingContext,
+    properties: Properties,
+    storageLevel: StorageLevel): InputDStream[String] = {
+
+    new ThingsInputDStream(ssc, properties, storageLevel)
+
   }
 
 }

@@ -18,12 +18,20 @@ package de.kp.works.stream.opencti
  * @author Stefan Krusche, Dr. Krusche & Partner PartG
  *
  */
-
+import de.kp.works.stream.ssl.SslOptions
 import java.util.Properties
 import scala.collection.JavaConverters._
 
 class CTIOptions(properties:Properties) {
 
   val settings:Map[String,String] = properties.asScala.toMap
+
+  def getAuthToken:Option[String] = ???
+
+  def getNumThreads:Int = ???
+
+  def getServerUrl:String = ???
+
+  def getSslOptions:Option[SslOptions] = ???
 
 }
