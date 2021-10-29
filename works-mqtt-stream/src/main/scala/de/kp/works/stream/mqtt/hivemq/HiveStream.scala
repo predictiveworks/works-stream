@@ -25,7 +25,7 @@ import org.apache.spark.streaming.dstream.ReceiverInputDStream
 
 import java.util.Properties
 
-object HiveMQStream {
+object HiveStream {
   
   /********** JAVA **********/
   
