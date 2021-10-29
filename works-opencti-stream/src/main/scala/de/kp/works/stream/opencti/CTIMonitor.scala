@@ -64,7 +64,7 @@ class CTIMonitor(options:CTIOptions, handler:CTIHandler) {
          * Check whether the provided data is a JSON element.
          */
         val eventElement = JsonParser.parseString(data)
-        handler.sendCTIEvent(eventType, eventElement)
+        handler.sendCTIEvent(eventId, eventType, eventElement)
       }
 
       override def onClosed(eventSource:EventSource) {

@@ -18,10 +18,20 @@ package de.kp.works.stream.opencti
  *
  */
 
-import com.google.gson.JsonElement
+import com.google.gson.{JsonElement, JsonObject}
 
 class CTIHandler(options:CTIOptions, store:String => Unit) {
 
-  def sendCTIEvent(eventType:String, eventElement:JsonElement):Unit = ???
+  def sendCTIEvent(eventId:String, eventType:String, eventElement:JsonElement):Unit = {
+
+    val ctiObj = new JsonObject
+    ctiObj.addProperty("id", eventId)
+
+    ctiObj.addProperty("type", eventType)
+    ctiObj.addProperty("data", eventElement.toString)
+
+    store(ctiObj.toString)
+
+  }
 
 }
