@@ -22,6 +22,16 @@ import com.google.gson.JsonElement
 
 class FleetHandler(options:FleetOptions, store:String => Unit) {
 
-  def sendFileEvent(fileName:String, fileElement:JsonElement):Unit = ???
+  def sendFileEvent(fileName:String, fileElement:JsonElement):Unit = {
+    /*
+     * The Fleet handler focuses on result logs
+     * only
+     */
+    val postfix = options.getLogPostfix
+    if (fileName.contains(s"status.$postfix")) return
+
+    store(fileElement.toString)
+
+  }
 
 }

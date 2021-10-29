@@ -37,7 +37,7 @@ class FleetOptions(properties:Properties) {
    * files
    */
   def getLogPostfix:String = {
-    settings.getOrElse(FleetNames.LOG_POSTFIX, ".log")
+    settings.getOrElse(FleetNames.LOG_POSTFIX, "log")
   }
   /*
    * The buffer size of the Fleet monitor for file system
