@@ -19,10 +19,22 @@ package de.kp.works.stream.zeek
  *
  */
 
-import com.google.gson.JsonElement
+import com.google.gson.{JsonElement, JsonObject}
 
 class ZeekHandler(options:ZeekOptions, store:String => Unit) {
 
-  def sendFileEvent(fileName:String, fileElement:JsonElement):Unit = ???
+  def sendFileEvent(fileName:String, fileElement:JsonElement):Unit = {
+    /*
+     * The current implementation sends an SSE-like event
+     */
+    val eventObj = new JsonObject
+    eventObj.addProperty("id", "zeek")
+
+    eventObj.addProperty("type", fileName)
+    eventObj.addProperty("data", fileElement.toString)
+
+    store(eventObj.toString)
+
+  }
 
 }

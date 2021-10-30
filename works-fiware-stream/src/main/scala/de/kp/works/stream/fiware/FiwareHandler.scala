@@ -20,6 +20,9 @@ package de.kp.works.stream.fiware
 
 class FiwareHandler(options:FiwareOptions, store:String => Unit) {
 
-  def sendFiwareEvent(event:FiwareEvent):Unit = ???
+  def sendFiwareEvent(event:FiwareEvent):Unit = {
+    val eventObj = event.toJson
+    store(eventObj.toString)
+  }
 
 }
