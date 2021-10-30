@@ -22,6 +22,8 @@ import com.google.gson.JsonObject
 
 class ThingsHandler(options:ThingsOptions, store:String => Unit) {
 
-  def sendThingsEvent(mqttObj:JsonObject):Unit = ???
+  def sendThingsEvent(mqttObj:JsonObject):Unit = {
+    store(mqttObj.toString)
+  }
 
 }
